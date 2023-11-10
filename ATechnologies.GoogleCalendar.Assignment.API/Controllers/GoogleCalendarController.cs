@@ -66,7 +66,30 @@ public class GoogleCalendarController : ControllerBase
 
         }
     }
-
+    /// <summary>
+    /// 
+    /// 
+    /// </summary>
+    /// <remarks>
+    ///    EventOrderBy
+    ///    
+    ///         [1] => StartDate
+    ///         [2] => EndDate
+    ///         [3] => Created
+    ///         
+    /// directon 
+    /// 
+    ///         [1] => ASC
+    ///         [2] => DESC
+    ///         
+    /// </remarks>
+    /// <param name="token"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="search"></param>
+    /// <param name="eventOrderBy"></param>
+    /// <param name="directon"></param>
+    /// <returns></returns>
     [HttpGet(Router.GoogleCalendar.PaginateEvents)]
     public async Task<IActionResult> PaginateEvents(string token, int? pageNumber = 1, int? pageSize = 10, string? search = "", EventOrderBy? eventOrderBy = EventOrderBy.CreatedDate, OrderByDirection? directon = OrderByDirection.ASC)
     {
@@ -91,17 +114,33 @@ public class GoogleCalendarController : ControllerBase
                     orderBy = eventDto => eventDto.Created;
                     break;
             }
-            List<GetEventDto> Dtos = new(0);
+            List<GetEventDto> resultDtos = Dto.Items;
 
-            if (directon == OrderByDirection.DESC)
-                Dtos = Dto.Items.OrderByDescending(orderBy).ToList();
-            Dtos = Dto.Items.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList();
+            if (directon != OrderByDirection.ASC)
+                resultDtos.OrderByDescending(orderBy);
+
+            resultDtos = resultDtos.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList();
+
+            resultDtos = resultDtos.Where(e =>
+            e.Id.Contains(search) ||
+            e.Status.Contains(search) ||
+            e.Created.Contains(search) ||
+            e.Updated.Contains(search) ||
+            e.Start.dateTime.Contains(search) ||
+            e.Start.timeZone.Contains(search) ||
+            e.End.dateTime.Contains(search) ||
+            e.End.timeZone.Contains(search) ||
+            e.Kind.Contains(search) ||
+            e.Location.Contains(search) ||
+            e.Etag.Contains(search) ||
+            e.Summary.Contains(search)).ToList();
+
             PaginationResponseResult<IEnumerable<GetEventDto>> result = new PaginationResponseResult<IEnumerable<GetEventDto>>()
             {
                 CurrentPage = pageNumber.Value,
                 PageSize = pageSize.Value,
                 TotalCount = Dto.Items.Count,
-                Items = Dtos,
+                Items = resultDtos,
             };
             return Ok(result);
         }
