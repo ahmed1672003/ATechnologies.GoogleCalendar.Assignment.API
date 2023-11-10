@@ -1,12 +1,4 @@
-﻿using System.Text;
-
-using ATechnologies.GoogleCalendar.Assignment.API.Dtos.AuthDtos;
-
-using Google;
-
-using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
+﻿
 
 namespace ATechnologies.GoogleCalendar.Assignment.API.Services;
 

@@ -1,5 +1,4 @@
-﻿using ATechnologies.GoogleCalendar.Assignment.API.Dtos.AuthDtos;
-
+﻿
 namespace ATechnologies.GoogleCalendar.Assignment.API.IServices;
 
 public interface ICachedGoogleOauthSevice

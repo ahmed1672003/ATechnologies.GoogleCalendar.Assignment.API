@@ -1,10 +1,4 @@
-﻿using System.Net;
-
-using ATechnologies.GoogleCalendar.Assignment.API.Dtos.CalendarDtos;
-
-using Newtonsoft.Json;
-
-namespace ATechnologies.GoogleCalendar.Assignment.API.Controllers;
+﻿namespace ATechnologies.GoogleCalendar.Assignment.API.Controllers;
 
 [ApiController]
 public class GoogleCalendarController : ControllerBase

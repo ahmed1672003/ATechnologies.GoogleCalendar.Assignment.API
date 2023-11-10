@@ -1,16 +1,4 @@
-﻿using ATechnologies.GoogleCalendar.Assignment.API.Dtos.CalendarDtos;
-
-using Google;
-
-using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
-using RestSharp;
-
-namespace ATechnologies.GoogleCalendar.Assignment.API.Services;
-
+﻿namespace ATechnologies.GoogleCalendar.Assignment.API.Services;
 public sealed class GoogleCalendarService : IGoogleCalendarService
 {
     private readonly IHttpClientFactory _httpClientFactory;

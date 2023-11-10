@@ -1,5 +1,4 @@
-﻿using ATechnologies.GoogleCalendar.Assignment.API.Dtos.CalendarDtos;
-
+﻿
 namespace ATechnologies.GoogleCalendar.Assignment.API.IServices;
 
 public interface IGoogleCalendarService

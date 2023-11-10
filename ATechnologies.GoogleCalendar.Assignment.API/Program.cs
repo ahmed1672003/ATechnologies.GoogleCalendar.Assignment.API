@@ -1,7 +1,10 @@
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 #region Services
+
 builder.Services.Configure<GoogleOauthSettings>(builder.Configuration.GetSection(nameof(GoogleOauthSettings)));
 builder.Services.Configure<GooglCalendarSettings>(builder.Configuration.GetSection(nameof(GooglCalendarSettings)));
 builder.Services.AddSingleton<GoogleOauthSettings>();
@@ -24,7 +27,12 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
