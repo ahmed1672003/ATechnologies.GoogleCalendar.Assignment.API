@@ -13,9 +13,21 @@ public class UserController : ControllerBase
         _cachedGoogleOauthSevice = cachedGoogleOauthSevice;
     }
 
+    /// <summary>
+    /// get token by email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     [HttpPost(Router.User.OauthUser)]
     public async Task<IActionResult> OauthUser([EmailAddress][Required] string email) => Ok(await _googleOauthService.GetOauthUri(email));
 
+    /// <summary>
+    /// redirect call back function from google
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="error"></param>
+    /// <param name="state"></param>
+    /// <returns></returns>
     [HttpGet(Router.User.OauthCallBack)]
     public async Task<IActionResult> OauthCallBack(string? code, string? error, string? state)
     {
@@ -47,6 +59,11 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// refresh token 
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <returns></returns>
     [HttpPost(Router.User.RefreshToken)]
     public async Task<IActionResult> RefreshToken(string? refreshToken)
     {
@@ -70,6 +87,11 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// revoke token
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
     [HttpGet(Router.User.RevokeToken)]
     public async Task<IActionResult> RevokeToken(string? accessToken)
     {

@@ -10,7 +10,12 @@ public class GoogleCalendarController : ControllerBase
         _calendarService = calendarService;
         _cachedGoogleOauthSevice = cachedGoogleOauthSevice;
     }
-
+    /// <summary>
+    /// add new event
+    /// </summary>
+    /// <param name="Dto"></param>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
     [HttpPost(Router.GoogleCalendar.AddEvent)]
     public async Task<IActionResult> AddEventAsync([FromForm] AddEventDto Dto, string? accessToken)
     {
@@ -31,6 +36,12 @@ public class GoogleCalendarController : ControllerBase
             return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
+
+    /// <summary>
+    /// get all events
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
 
     [HttpGet(Router.GoogleCalendar.GetAllEvents)]
     public async Task<IActionResult> GetAllEventsAsync(string? token)
@@ -55,6 +66,13 @@ public class GoogleCalendarController : ControllerBase
 
         }
     }
+
+    /// <summary>
+    /// delete event by id
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
 
     [HttpDelete(Router.GoogleCalendar.DeleteEventById)]
     public async Task<IActionResult> DeleteEventById(string eventId, string? token)
