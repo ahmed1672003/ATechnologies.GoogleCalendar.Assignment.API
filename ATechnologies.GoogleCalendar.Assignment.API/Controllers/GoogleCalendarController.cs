@@ -67,8 +67,7 @@ public class GoogleCalendarController : ControllerBase
         }
     }
     /// <summary>
-    /// 
-    /// 
+    /// Paginate events
     /// </summary>
     /// <remarks>
     ///    EventOrderBy
