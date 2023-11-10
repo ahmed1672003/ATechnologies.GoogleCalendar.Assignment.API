@@ -16,6 +16,7 @@ public static class Router
         private const string GoogelCalendarPrefic = ApiPrefix + "calendars";
         public const string AddEvent = ApiPrefix + "add-event";
         public const string GetAllEvents = ApiPrefix + "get-all-events";
+        public const string PaginateEvents = ApiPrefix + "paginate-events";
         public const string DeleteEventById = ApiPrefix + "delete-event-byid";
     }
 }

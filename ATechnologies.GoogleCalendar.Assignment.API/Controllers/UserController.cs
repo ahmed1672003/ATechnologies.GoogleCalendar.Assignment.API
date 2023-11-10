@@ -1,6 +1,4 @@
-﻿
-
-namespace ATechnologies.GoogleCalendar.Assignment.API.Controllers;
+﻿namespace ATechnologies.GoogleCalendar.Assignment.API.Controllers;
 
 [ApiController]
 public class UserController : ControllerBase

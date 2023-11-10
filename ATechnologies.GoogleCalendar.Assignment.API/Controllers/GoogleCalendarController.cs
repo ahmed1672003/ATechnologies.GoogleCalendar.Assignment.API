@@ -67,13 +67,56 @@ public class GoogleCalendarController : ControllerBase
         }
     }
 
+    [HttpGet(Router.GoogleCalendar.PaginateEvents)]
+    public async Task<IActionResult> PaginateEvents(string token, int? pageNumber = 1, int? pageSize = 10, string? search = "", EventOrderBy? eventOrderBy = EventOrderBy.CreatedDate, OrderByDirection? directon = OrderByDirection.ASC)
+    {
+        try
+        {
+            string accessToken = token ?? HttpContext.Request.Cookies["access_token"] ?? await _cachedGoogleOauthSevice.GetAccessTokenAsync();
+            if (string.IsNullOrEmpty(accessToken))
+                return Unauthorized();
+
+            GetCalendarEventsDto Dto = JsonConvert.DeserializeObject<GetCalendarEventsDto>(await _calendarService.GetAllEventsAsnync(token));
+
+            Func<GetEventDto, object> orderBy = eventDto => new();
+            switch (eventOrderBy.Value)
+            {
+                case EventOrderBy.StartDate:
+                    orderBy = eventDto => eventDto.Start.dateTime;
+                    break;
+                case EventOrderBy.EndDate:
+                    orderBy = eventDto => eventDto.End.dateTime;
+                    break;
+                default:
+                    orderBy = eventDto => eventDto.Created;
+                    break;
+            }
+            List<GetEventDto> Dtos = new(0);
+
+            if (directon == OrderByDirection.DESC)
+                Dtos = Dto.Items.OrderByDescending(orderBy).ToList();
+            Dtos = Dto.Items.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList();
+            PaginationResponseResult<IEnumerable<GetEventDto>> result = new PaginationResponseResult<IEnumerable<GetEventDto>>()
+            {
+                CurrentPage = pageNumber.Value,
+                PageSize = pageSize.Value,
+                TotalCount = Dto.Items.Count,
+                Items = Dtos,
+            };
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
+
     /// <summary>
     /// delete event by id
     /// </summary>
     /// <param name="eventId"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-
     [HttpDelete(Router.GoogleCalendar.DeleteEventById)]
     public async Task<IActionResult> DeleteEventById(string eventId, string? token)
     {

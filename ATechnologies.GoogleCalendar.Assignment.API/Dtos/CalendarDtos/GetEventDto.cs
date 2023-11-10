@@ -5,6 +5,7 @@ public sealed class GetEventDto
     public string Id { get; set; }
     public string Kind { get; set; }
     public string Etag { get; set; }
+    public string Location { get; set; }
     public string Status { get; set; }
     public string Created { get; set; }
     public string Updated { get; set; }
@@ -15,5 +16,8 @@ public sealed class GetEventDto
 
 public sealed class GetCalendarEventsDto
 {
-    public IEnumerable<GetEventDto> Items { get; set; }
+    public string Kind { get; set; }
+    public string Etag { get; set; }
+    public string Summary { get; set; }
+    public List<GetEventDto> Items { get; set; }
 }
